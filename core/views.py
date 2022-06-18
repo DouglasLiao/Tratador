@@ -1,9 +1,13 @@
 from django.views.generic import FormView
 from django.urls import reverse_lazy
 from django.contrib import messages
+from django_tables2 import SingleTableView
 
-from .models import Servico, Funcionario, Recursos
+from django.contrib.auth.models import User, Group
+
+from .models import Servico, Funcionario, Recursos, Animais
 from .forms import ContatoForm
+from .tables import AnimaisTable
 
 class IndexView(FormView):
     template_name = 'index.html'
@@ -29,3 +33,8 @@ class IndexView(FormView):
     def form_invalid(self, form, *args, **kwargs):
         messages.error(self.request, 'Erro ao enviar e-mail')
         return super(IndexView, self).form_invalid(form, *args, **kwargs)
+
+class AnimaisView(SingleTableView):
+    model = Animais
+    table_class = AnimaisTable
+    template_name = 'animais.html'

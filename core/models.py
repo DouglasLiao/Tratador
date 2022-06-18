@@ -86,3 +86,18 @@ class Recursos(Base):
         
     def __str__(self):
         return self.recurso
+    
+class Animais(Base):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    comeu = models.BooleanField(default=False)
+    bebeu = models.BooleanField(default=False)
+    saiu = models.BooleanField(default=False)
+    peso = models.CharField('Peso', max_length=100)
+    saude = models.TextField('saude', max_length=200)
+    
+    class Meta:
+        verbose_name = 'Animal'
+        verbose_name_plural = 'Animais'
+        
+    def __str__(self):
+        return str(self.id)
