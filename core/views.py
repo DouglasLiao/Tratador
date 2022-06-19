@@ -9,6 +9,12 @@ from .models import Servico, Funcionario, Recursos, Animais
 from .forms import ContatoForm
 from .tables import AnimaisTable
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework import permissions
+from .serializers import AnimaisSerializer
+
 class IndexView(FormView):
     template_name = 'index.html'
     form_class = ContatoForm
@@ -38,3 +44,38 @@ class AnimaisView(SingleTableView):
     model = Animais
     table_class = AnimaisTable
     template_name = 'animais.html'
+    
+class AnimaisListApiView(APIView):
+    def get(self, request, *args, **kwargs):
+        animal = Animais.objects.filter(ativo = request.user.id)
+        serializer = AnimaisSerializer(animal, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        data = {
+            'comeu': request.data.get('comeu'), 
+            'bebeu': request.data.get('bebeu'), 
+            'saiu': request.data.get('saiu'), 
+            'peso': request.data.get('peso'), 
+            'saude': request.data.get('saude'), 
+            'id': request.user.id
+        }
+        serializer = AnimaisSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, animais_id, *args, **kwargs):
+        animal_instance = self.get_object(animais_id, request.id)
+        if not animal_instance:
+            return Response(
+                {"res": "Object with todo id does not exists"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        animal_instance.delete()
+        return Response(
+            {"res": "Object deleted!"},
+            status=status.HTTP_200_OK
+        )
