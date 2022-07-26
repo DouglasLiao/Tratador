@@ -5,13 +5,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 import serial
 import time
 import schedule
+import json
 
 from .forms import StudentForm
 from .models import StudentModel
 
-
-
-
+import pyfirmata2
 
 def add_student(request, template_name='student_add.html'):
     form = StudentForm(request.POST or None)
@@ -47,64 +46,38 @@ def delete_student(request, pk):
 def show_graph(request,template_name='live_graph.html'):
     return render(request,template_name)
 
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
 
 def fetch_sensor_values_ajax(request):
     data={}
-    if request.is_ajax():
-            com_port = request.GET.get('id', None)
-            # sensor_val=random.random() # auto random value if sendor is not connected , you can remove this line
-            sensor_data=[]
-            now=datetime.now()
-            ok_date=str(now.strftime('%Y-%m-%d %H:%M:%S'))
-            try:
 
-                sr=serial.Serial("COM9",9600)
-                sr=serial.Serial(com_port,9600)
-                st=list(str(sr.readline(),'utf-8'))
-                sr.close()
-                sensor_val=str(''.join(st[:]))
-                if(sensor_val):
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+    if is_ajax:
+        com_port = request.GET.get('id', None)
+        sensor_val = ''
+        ser = serial.Serial(com_port, 115200, timeout=1)
+        time.sleep(2)
+        line = ser.readline()
+        sensor_data=[]
+        now=datetime.now()
+        ok_date=str(now.strftime('%Y-%m-%d %H:%M:%S'))
+        ser.close()
+        try:
+            if line:
+                string = line.decode()
+                num = int(string)
+
+                sensor_val = str(num(''.join(line[:])))
+                if (sensor_val):
                     sensor_data.append(str(sensor_val)+','+ok_date)
                 else:
                     sensor_data.append(str(sensor_val)+','+ok_date)
-            except Exception as e:
-                    sensor_data.append(str(sensor_val)+','+ok_date)
-            data['result']=sensor_data
+        except Exception as e:
+                sensor_data.append(str(sensor_val)+','+ok_date)
+        data['result']=sensor_data
     else:
         data['result']='Not Ajax'
     return JsonResponse(data)
 
-def main_func(request):
-    arduino = serial.Serial('com3', 9600)
-    print('Established serial connection to Arduino')
-    arduino_data = arduino.readline()
-
-    decoded_values = str(arduino_data[0:len(arduino_data)].decode("utf-8"))
-    list_values = decoded_values.split('x')
-
-    for item in list_values:
-        list_in_floats.append(float(item))
-
-    print(f'Collected readings from Arduino: {list_in_floats}')
-
-    arduino_data = 0
-    list_in_floats.clear()
-    list_values.clear()
-    arduino.close()
-    print('Connection closed')
-    print('<----------------------------->')
-
-
-# ----------------------------------------Main Code------------------------------------
-# Declare variables to be used
-list_values = []
-list_in_floats = []
-
-print('Program started')
-
-# Setting up the Arduino
-schedule.every(10).seconds.do(main_func)
-
-while True:
-    schedule.run_pending()
-    time.sleep(1)

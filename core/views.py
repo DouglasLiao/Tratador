@@ -5,9 +5,9 @@ from django_tables2 import SingleTableView
 
 from django.contrib.auth.models import User, Group
 
-from .models import Servico, Funcionario, Recursos, Animais
+from .models import Servico, Funcionario, Recursos, Animais, Read
 from .forms import ContatoForm
-from .tables import AnimaisTable
+from .tables import AnimaisTable, ReaderTable
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -79,3 +79,8 @@ class AnimaisListApiView(APIView):
             {"res": "Object deleted!"},
             status=status.HTTP_200_OK
         )
+
+class ReadListView(SingleTableView):
+    model = Read
+    table_class = ReaderTable
+    template_name = 'read.html'

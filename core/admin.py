@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .models import Animais, Cargo, Recursos, Servico, Funcionario
+from .models import Read
 
 
 @admin.register(Cargo)

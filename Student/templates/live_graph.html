@@ -9,12 +9,12 @@
 </head>
 <body>
 <div class="container">
-<center><h1>Live Graph</h1></center>
+<center><h1>Gráfico em tempo real</h1></center>
 <hr>
     
     <div class="row">
         <div class="col-md-12">
-            <div class="col-md-4"><label>Enter Com Port:</label></div>
+            <div class="col-md-4"><label>Insira a porta com:</label></div>
             <div class="col-md-4">
                 <input type="text" class="form-control col-md-2" name="com" id="comport">
             </div>
@@ -49,13 +49,13 @@ function fill_graph_sensor(){
 var chart = new CanvasJS.Chart("chartContainer", {
 	animationEnabled: true,
 	title: {
-		text: "Live Data from Arduino connected with sensor"
+		text: "Dados em tempo real com o esp conectado com LORA"
 	},
 	axisX: {
-		title: "Time"
+		title: "Tempo"
 	},
 	axisY: {
-		title: "data",
+		title: "Dados",
 		suffix: ""
 	},
 	data: [{

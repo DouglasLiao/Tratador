@@ -101,3 +101,14 @@ class Animais(Base):
         
     def __str__(self):
         return str(self.id)
+
+class Read(models.Model):
+    reader = models.CharField("reader", max_length=255)
+    animal = models.TextField("animal", max_length=255)
+
+    class Meta:
+        verbose_name = 'Read'
+        verbose_name_plural = 'Readers'
+    
+    def __str__(self):
+        return str(self.animal)

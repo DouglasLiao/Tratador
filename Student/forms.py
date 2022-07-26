@@ -3,17 +3,17 @@ from .models import StudentModel
 
 
 class StudentForm(forms.ModelForm):
-    name = forms.CharField(label='Name', max_length=200, widget=forms.TextInput(attrs={
+    name = forms.CharField(label='Nome', max_length=200, widget=forms.TextInput(attrs={
         'class': 'form-control',
-        'placeholder': 'Enter Name here '
+        'placeholder': 'Insira o nome do Estudante '
     }))
     age = forms.CharField( max_length=200, required=False, widget=forms.TextInput(attrs={
         'class': 'form-control',
-        'placeholder': 'Age '
+        'placeholder': 'Idade '
     }))
     address = forms.CharField(max_length=200, required=False, widget=forms.TextInput(attrs={
         'class': 'form-control',
-        'placeholder': 'Address '
+        'placeholder': 'Endereço '
     }))
     email = forms.CharField(max_length=200, required=False, widget=forms.TextInput(attrs={
         'class': 'form-control',

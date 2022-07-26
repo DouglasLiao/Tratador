@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Live Graph</title>
+    <title>Gráficos em Tempo Real</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
@@ -14,10 +14,10 @@
 </head>
 <body>
     <center>
-    <label>Enter Com PORT:</label>
+    <label>Digite a porta com:</label>
     <input type="text" class="form-control col-md-2" name="com" id="comport">
     <input type="submit" name="submit" id="btn_show" class="btn btn-primary">
-    <h1>Live data from Arduino Sensor</h1>
+    <h1>Tempo Real do RFID</h1>
         </center>
 
     <div id="chartContainer" style="height: 450px; width:100%;"></div>
@@ -34,13 +34,13 @@ function fill_graph_sensor(){
 var chart = new CanvasJS.Chart("chartContainer", {
 	animationEnabled: true,
 	title: {
-		text: "Live Data"
+		text: "Tempo real"
 	},
 	axisX: {
-		title: "Time"
+		title: "Tempo"
 	},
 	axisY: {
-		title: "data",
+		title: "Dados",
 		suffix: ""
 	},
 	data: [{
